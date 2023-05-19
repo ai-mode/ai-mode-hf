@@ -52,10 +52,10 @@
   :type 'string
   :group 'ai-mode-hf)
 
-(defvar ai-mode-hf--completions--url "/models")
+(defvar ai-mode-hf--completions--url "/models/")
 
 
-(defcustom ai-mode-hf--model "/bigcode/starcoder"
+(defcustom ai-mode-hf--model "bigcode/starcoder"
   "The used HuggingFace model."
   :type 'string
   :group 'ai-mode-hf)
@@ -81,6 +81,11 @@
 
 (defcustom ai-mode-hf--model-temperature 1
   "What sampling temperature to use, between 0 and 100."
+  :type '(choice integer (const nil))
+  :group 'ai-mode-hf)
+
+(defcustom ai-mode-hf--top-p 0.8
+  "What sampling temperature to use, between 0 and 1."
   :type '(choice integer (const nil))
   :group 'ai-mode-hf)
 
@@ -133,7 +138,7 @@ EXTRA-PARAMS - an alist with additional parameters."
          (timeout (map-elt extra-params :timeout ai-mode-hf--request-timeout))
          (parameters `(("max_new_tokens" . ,(map-elt extra-params :max-tokens ai-mode-hf--default-max-tokens))
                        ("temperature" . ,(map-elt extra-params :temperature ai-mode-hf--model-temperature))
-                       ("top_p" . ,(map-elt extra-params :temperature ai-mode-hf--model-temperature))
+                       ("top_p" . ,(map-elt extra-params :top-p ai-mode-hf--top-p))
                        ("return_full_text" . ,json-false)
                        ("stop" . ,(map-elt extra-params :stop-tokens ai-mode-hf--stop-tokens))))
          (request-data `(("inputs" . ,input)

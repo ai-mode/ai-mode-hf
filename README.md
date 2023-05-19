@@ -4,9 +4,12 @@
 [![LICENSE](https://img.shields.io/github/license/ai-mode/ai-mode-hf)](https://github.com/ai-mode/ai-mode-hf/blob/master/LICENSE)
 
 # Overview
-This package provides a code autocomplete backend through HuggingFace Inference API or local [Text Generation Interference server](https://github.com/huggingface/text-generation-inference).
+This package provides a code autocomplete backend through HuggingFace Inference API or local [Text Generation Interference server](https://github.com/huggingface/text-generation-inference) for [ai-mode](https://github.com/ai-mode/ai-mode/) extension.
 
 # Installation
+
+First of all, install [ai-mode](https://github.com/ai-mode/ai-mode/), if you haven't already done so.
+
 
 ### Installation via MELPA
 
@@ -43,7 +46,11 @@ or you can use use-package
 (use-package ai-mode-hf
   :load-path "~/.emacs.d/plugins/ai-mode-hf`"
   :config (progn
-            (add-to-list 'ai-completions--backends '("HuggingFace" . ai-mode-hf--completion-backend))))
+            (add-to-list 'ai-completions--backends '("HuggingFace" . ai-mode-hf--completion-backend))
+
+            ;; Optionally, we are setting up HuggingFace as the default backend for AI completions.
+            (setq ai-completions--current-backend #'ai-mode-hf--completion-backend)
+            ))
 
 ```
 
@@ -69,11 +76,17 @@ There are several ways to assign your key to the variable `ai-mode-hf--api-key`.
 | `ai-mode-hf--stop-tokens`        | List of stop tokens              |
 | `ai-mode-hf--default-max-tokens` | Max number of tokens in response |
 | `ai-mode-hf--model-temperature`  | Sampling temperature             |
+| `ai-mode-hf--top-p`             | Top-p sampling                   |
 
 
 
-#### Add HuggingFace completion backend to ai-completions--backends
+
+#### Add the HuggingFace completion backend to ai-completions--backends:
 
 ```elisp
 (add-to-list 'ai-completions--backends '("HuggingFace" . ai-mode-hf--completion-backend))
 ```
+
+Now you can choose available backends by calling the command `ai-completions-change-backend`.
+
+If you want to change the default backend, you need to redefine the value of the variable `ai-completions--current-backend` in your Emacs config.
